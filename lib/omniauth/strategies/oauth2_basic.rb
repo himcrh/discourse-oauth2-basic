@@ -34,4 +34,12 @@ class OmniAuth::Strategies::Oauth2Basic < ::OmniAuth::Strategies::OAuth2
     result = obj.respond_to?(k) ? obj.send(k) : obj[k]
     keys.empty? ? result : recurse(result, keys)
   end
+
+  def authorize_params
+    super.tap do |params|
+      # 将 client_id 替换为 appid
+      params[:appid] = params.delete(:client_id) if params[:client_id]
+    end
+  end
+  
 end
